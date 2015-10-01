@@ -46,6 +46,10 @@ RUN mkdir /home/gitlab-runner/.phpenv/plugins; \
 #    ln -s /usr/lib/x86_64-linux-gnu/libldap.so     /usr/lib/libldap.so && \
 #    ln -s /usr/include/x86_64-linux-gnu/gmp.h      /usr/include/gmp.h
 
+USER root
+ENV HOME /root
+WORKDIR /root
+
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
