@@ -35,7 +35,7 @@ WORKDIR /home/gitlab-runner
 RUN echo $HOME
 
 # Install phpenv
-RUN curl https://raw.github.com/CHH/phpenv/master/bin/phpenv-install.sh | bash
+RUN cd /home/gitlab-runner && git clone git://github.com/phpenv/phpenv.git .phpenv 
 RUN echo 'export PATH="/home/gitlab-runner/.phpenv/bin:$PATH"' >> /home/gitlab-runner/.bashrc
 RUN echo 'eval "$(phpenv init -)"' >> /home/gitlab-runner/.bashrc
 RUN mkdir /home/gitlab-runner/.phpenv/plugins; \
