@@ -4,7 +4,7 @@ FROM gitlab/gitlab-runner
 MAINTAINER  Michael Burri "mpbzh@burri.io"
 
 ENV PHP_DIR /etc/php5
-ENV PATH $HOME/.phpenv/bin:$HOME/.phpenv/shims:$PATH
+ENV PATH /home/gitlab-runner/.phpenv/bin:/home/gitlab-runner/.phpenv/shims:$PATH
 
 # Install packages required to build PHP
 RUN apt-get update -y && \
@@ -34,8 +34,8 @@ RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
     sudo /bin/bash -c "echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh" && \
     echo 'eval "$(phpenv init -)"' >> /gitlab-runner/.bashrc
 
-RUN git clone git://github.com/CHH/php-build.git $HOME/.phpenv/plugins/php-build
-COPY files/configure $HOME/.phpenv/plugins/php-build/share/php-build/default_configure_options
+RUN git clone git://github.com/CHH/php-build.git /home/gitlab-runner/.phpenv/plugins/php-build
+COPY files/configure /home/gitlab-runner/.phpenv/plugins/php-build/share/php-build/default_configure_options
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/libfreetype.so && \
     ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
