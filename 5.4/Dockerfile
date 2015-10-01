@@ -8,6 +8,7 @@ ENV PHP_VERSION 5.4.38
 # COPY files/ci-runner.ini /home/gitlab-runner/.phpenv/versions/$PHP_VERSION/etc/conf.d/ci-runner.ini
 
 RUN echo $PATH;
+RUN ls -la /home/gitlab-runner;
 
 RUN phpenv install $PHP_VERSION \
     phpenv rehash && \
