@@ -1,7 +1,7 @@
 # docker-gitlab-runner-php
 
 FROM gitlab/gitlab-runner
-MAINTAINER  Michael Burri "m@burri.io"
+MAINTAINER  Michael Burri "mpbzh@burri.io"
 
 ENV PHP_DIR /etc/php5
 ENV PATH /root/.phpenv/bin:/root/.phpenv/shims:$PATH

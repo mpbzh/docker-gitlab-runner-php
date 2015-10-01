@@ -1,7 +1,7 @@
 # docker-gitlab-runner-php5.4
 
 FROM mpbzh/gitlab-runner-php
-MAINTAINER  Michael Burri "m@burri.io"
+MAINTAINER  Michael Burri "mpbzh@burri.io"
 
 ENV PHP_VERSION 5.4.38
 
