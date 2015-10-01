@@ -1,4 +1,4 @@
-# gitlab-runner-php
+# docker-gitlab-runner-php
 
 FROM gitlab/gitlab-runner
 MAINTAINER  Michael Burri "mpbzh@burri.io"
@@ -30,22 +30,21 @@ RUN wget -O /tmp/libbison-dev.deb http://launchpadlibrarian.net/140087283/libbis
     rm -f /tmp/*.deb
 
 USER gitlab-runner
-RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
-    /tmp/phpenv/bin/phpenv-install.sh 
-    
-# RUN /bin/bash -c "echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh"
+ENV HOME /home/gitlab-runner
+WORKDIR /home/gitlab-runner
+
+# Install phpenv
+RUN curl https://raw.github.com/CHH/phpenv/master/bin/phpenv-install.sh | bash
+RUN echo 'export PATH="/home/gitlab-runner/.phpenv/bin:$PATH"' >> /home/gitlab-runner/.bashrc
 RUN echo 'eval "$(phpenv init -)"' >> /home/gitlab-runner/.bashrc
+RUN mkdir /home/gitlab-runner/.phpenv/plugins; \
+    cd /home/gitlab-runner/.phpenv/plugins; \
+    git clone https://github.com/CHH/php-build.git
 
-RUN git clone git://github.com/CHH/php-build.git $HOME/.phpenv/plugins/php-build
-
-COPY files/configure $HOME/.phpenv/plugins/php-build/share/php-build/default_configure_options
-
-USER root
-
-RUN ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/libfreetype.so && \
-    ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
-    ln -s /usr/lib/x86_64-linux-gnu/libldap.so     /usr/lib/libldap.so && \
-    ln -s /usr/include/x86_64-linux-gnu/gmp.h      /usr/include/gmp.h
+# RUN ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/libfreetype.so && \
+#    ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
+#    ln -s /usr/lib/x86_64-linux-gnu/libldap.so     /usr/lib/libldap.so && \
+#    ln -s /usr/include/x86_64-linux-gnu/gmp.h      /usr/include/gmp.h
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php && \
