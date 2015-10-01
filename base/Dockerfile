@@ -1,10 +1,10 @@
-# docker-gitlab-runner-php
+# gitlab-runner-php
 
 FROM gitlab/gitlab-runner
 MAINTAINER  Michael Burri "mpbzh@burri.io"
 
 ENV PHP_DIR /etc/php5
-ENV PATH /root/.phpenv/bin:/root/.phpenv/shims:$PATH
+ENV PATH $HOME/.phpenv/bin:$HOME/.phpenv/shims:$PATH
 
 # Install packages required to build PHP
 RUN apt-get update -y && \
@@ -32,10 +32,10 @@ RUN wget -O /tmp/libbison-dev.deb http://launchpadlibrarian.net/140087283/libbis
 RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
     /tmp/phpenv/bin/phpenv-install.sh && \
     sudo /bin/bash -c "echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh" && \
-    echo 'eval "$(phpenv init -)"' >> /root/.bashrc
+    echo 'eval "$(phpenv init -)"' >> /gitlab-runner/.bashrc
 
-RUN git clone git://github.com/CHH/php-build.git /root/.phpenv/plugins/php-build
-COPY files/configure /root/.phpenv/plugins/php-build/share/php-build/default_configure_options
+RUN git clone git://github.com/CHH/php-build.git $HOME/.phpenv/plugins/php-build
+COPY files/configure $HOME/.phpenv/plugins/php-build/share/php-build/default_configure_options
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/libfreetype.so && \
     ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
