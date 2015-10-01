@@ -4,7 +4,6 @@ FROM gitlab/gitlab-runner
 MAINTAINER  Michael Burri "mpbzh@burri.io"
 
 ENV PHP_DIR /etc/php5
-ENV PATH /home/gitlab-runner/.phpenv/bin:/home/gitlab-runner/.phpenv/shims:$PATH
 
 # Install packages required to build PHP
 RUN apt-get update -y && \
@@ -41,10 +40,13 @@ RUN mkdir /home/gitlab-runner/.phpenv/plugins; \
     cd /home/gitlab-runner/.phpenv/plugins; \
     git clone https://github.com/CHH/php-build.git
 
+ENV PATH /home/gitlab-runner/.phpenv/shims:/home/gitlab-runner/.phpenv/bin:$PATH
+
 # RUN ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/libfreetype.so && \
 #    ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
 #    ln -s /usr/lib/x86_64-linux-gnu/libldap.so     /usr/lib/libldap.so && \
 #    ln -s /usr/include/x86_64-linux-gnu/gmp.h      /usr/include/gmp.h
+
 
 USER root
 ENV HOME /root
