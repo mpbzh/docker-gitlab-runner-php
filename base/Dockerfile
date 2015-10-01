@@ -29,13 +29,16 @@ RUN wget -O /tmp/libbison-dev.deb http://launchpadlibrarian.net/140087283/libbis
     dpkg -i /tmp/bison_2.7.1.deb && \
     rm -f /tmp/*.deb
 
+USER gitlab-runner
 RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
     /tmp/phpenv/bin/phpenv-install.sh && \
     sudo /bin/bash -c "echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh" && \
     echo 'eval "$(phpenv init -)"' >> /gitlab-runner/.bashrc
 
-RUN git clone git://github.com/CHH/php-build.git /home/gitlab-runner/.phpenv/plugins/php-build
-COPY files/configure /home/gitlab-runner/.phpenv/plugins/php-build/share/php-build/default_configure_options
+RUN git clone git://github.com/CHH/php-build.git $HOME/.phpenv/plugins/php-build
+COPY files/configure $HOME/.phpenv/plugins/php-build/share/php-build/default_configure_options
+
+USER root
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/libfreetype.so && \
     ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
