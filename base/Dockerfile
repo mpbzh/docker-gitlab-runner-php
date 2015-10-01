@@ -33,7 +33,7 @@ USER gitlab-runner
 RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
     /tmp/phpenv/bin/phpenv-install.sh 
     
-RUN sudo /bin/bash -c "echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh"
+# RUN /bin/bash -c "echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh"
 RUN echo 'eval "$(phpenv init -)"' >> /home/gitlab-runner/.bashrc
 
 RUN git clone git://github.com/CHH/php-build.git $HOME/.phpenv/plugins/php-build
