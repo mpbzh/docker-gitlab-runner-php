@@ -32,6 +32,8 @@ USER gitlab-runner
 ENV HOME /home/gitlab-runner
 WORKDIR /home/gitlab-runner
 
+RUN echo $HOME
+
 # Install phpenv
 RUN curl https://raw.github.com/CHH/phpenv/master/bin/phpenv-install.sh | bash
 RUN echo 'export PATH="/home/gitlab-runner/.phpenv/bin:$PATH"' >> /home/gitlab-runner/.bashrc
