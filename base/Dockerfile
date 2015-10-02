@@ -28,18 +28,19 @@ RUN wget -O /tmp/libbison-dev.deb http://launchpadlibrarian.net/140087283/libbis
     dpkg -i /tmp/bison_2.7.1.deb && \
     rm -f /tmp/*.deb
 
+RUN echo $HOME
+
+# Install phpenv
+RUN cd /home/gitlab-runner && git clone git://github.com/phpenv/phpenv.git .phpenv 
+
 USER gitlab-runner
 ENV HOME /home/gitlab-runner
 WORKDIR /home/gitlab-runner
 
-RUN echo $HOME
-
-# Install phpenv
-RUN cd /usr/local && git clone git://github.com/phpenv/phpenv.git .phpenv 
-RUN echo 'export PATH="/usr/local/.phpenv/bin:$PATH"' >> /usr/local/.bashrc
+RUN echo 'export PATH="/home/gitlab-runner/.phpenv/bin:$PATH"' >> /home/gitlab-runner/.bashrc
 RUN echo 'eval "$(phpenv init -)"' >> /usr/local/.bashrc
-RUN mkdir /usr/local/.phpenv/plugins; \
-    cd /usr/local/.phpenv/plugins; \
+RUN mkdir /home/gitlab-runner/.phpenv/plugins; \
+    cd /home/gitlab-runner/.phpenv/plugins; \
     git clone https://github.com/CHH/php-build.git
 
 ENV PATH /usr/local/.phpenv/shims:/usr/local/.phpenv/bin:$PATH
@@ -48,7 +49,6 @@ ENV PATH /usr/local/.phpenv/shims:/usr/local/.phpenv/bin:$PATH
 #    ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
 #    ln -s /usr/lib/x86_64-linux-gnu/libldap.so     /usr/lib/libldap.so && \
 #    ln -s /usr/include/x86_64-linux-gnu/gmp.h      /usr/include/gmp.h
-
 
 USER root
 ENV HOME /root
