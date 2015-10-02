@@ -32,13 +32,13 @@ RUN echo $HOME
 
 # Install phpenv
 RUN cd /home/gitlab-runner && git clone git://github.com/phpenv/phpenv.git .phpenv 
+RUN echo 'eval "$(phpenv init -)"' >> /usr/local/.bashrc
 
 USER gitlab-runner
 ENV HOME /home/gitlab-runner
 WORKDIR /home/gitlab-runner
 
 RUN echo 'export PATH="/home/gitlab-runner/.phpenv/bin:$PATH"' >> /home/gitlab-runner/.bashrc
-RUN echo 'eval "$(phpenv init -)"' >> /usr/local/.bashrc
 RUN mkdir /home/gitlab-runner/.phpenv/plugins; \
     cd /home/gitlab-runner/.phpenv/plugins; \
     git clone https://github.com/CHH/php-build.git
