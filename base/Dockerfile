@@ -35,14 +35,14 @@ WORKDIR /home/gitlab-runner
 RUN echo $HOME
 
 # Install phpenv
-RUN cd /home/gitlab-runner && git clone git://github.com/phpenv/phpenv.git .phpenv 
-RUN echo 'export PATH="/home/gitlab-runner/.phpenv/bin:$PATH"' >> /home/gitlab-runner/.bashrc
-RUN echo 'eval "$(phpenv init -)"' >> /home/gitlab-runner/.bashrc
-RUN mkdir /home/gitlab-runner/.phpenv/plugins; \
-    cd /home/gitlab-runner/.phpenv/plugins; \
+RUN cd /usr/local && git clone git://github.com/phpenv/phpenv.git .phpenv 
+RUN echo 'export PATH="/usr/local/.phpenv/bin:$PATH"' >> /usr/local/.bashrc
+RUN echo 'eval "$(phpenv init -)"' >> /usr/local/.bashrc
+RUN mkdir /usr/local/.phpenv/plugins; \
+    cd /usr/local/.phpenv/plugins; \
     git clone https://github.com/CHH/php-build.git
 
-ENV PATH /home/gitlab-runner/.phpenv/shims:/home/gitlab-runner/.phpenv/bin:$PATH
+ENV PATH /usr/local/.phpenv/shims:/usr/local/.phpenv/bin:$PATH
 
 # RUN ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/libfreetype.so && \
 #    ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
