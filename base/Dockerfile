@@ -27,6 +27,7 @@ RUN chmod +x /tmp/phpenv.sh && \
     
 RUN echo 'eval "$(phpenv init -)"' >> ~/.bash_profile
 
+RUN git clone git://github.com/CHH/php-build.git /root/.phpenv/plugins/php-build
 COPY files/configure /root/.phpenv/plugins/php-build/share/php-build/default_configure_options
 
 ENV PATH /root/.phpenv/bin:/root/.phpenv/shims:$PATH
