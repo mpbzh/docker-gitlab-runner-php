@@ -37,7 +37,7 @@ RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
 RUN git clone git://github.com/CHH/php-build.git /home/gitlab-runner/.phpenv/plugins/php-build
 COPY files/configure /home/gitlab-runner/.phpenv/plugins/php-build/share/php-build/default_configure_options
 
-RUN /home/gitlab-runner/.phpenv/shims:/home/gitlab-runner/.phpenv/bin:$PATH
+ENV PATH /home/gitlab-runner/.phpenv/shims:/home/gitlab-runner/.phpenv/bin:$PATH
 
 # RUN ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/libfreetype.so && \
 #    ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
@@ -47,3 +47,6 @@ RUN /home/gitlab-runner/.phpenv/shims:/home/gitlab-runner/.phpenv/bin:$PATH
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
+
+USER gitlab-runner
+ENV PATH /home/gitlab-runner/.phpenv/shims:/home/gitlab-runner/.phpenv/bin:$PATH
