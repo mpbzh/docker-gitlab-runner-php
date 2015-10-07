@@ -24,6 +24,8 @@ RUN curl -sS https://getcomposer.org/installer | php && \
 COPY files/phpenv.sh /tmp/
 RUN chmod +x /tmp/phpenv.sh && \
     bash /tmp/phpenv.sh
+    
+RUN echo 'eval "$(phpenv init -)"' >> ~/.bash_profile
 
 COPY files/configure /root/.phpenv/plugins/php-build/share/php-build/default_configure_options
 
