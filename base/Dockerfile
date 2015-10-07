@@ -21,8 +21,9 @@ RUN wget -O /usr/bin/gitlab-ci-multi-runner https://gitlab-ci-multi-runner-downl
 RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
 	
-COPY files/phpenv.sh /tmp/
-RUN /tmp/phpenv.sh
+COPY files/phpenv.sh /tmp/ && \
+    chmod +x /tmp/phpenv.sh
+RUN bash /tmp/phpenv.sh
 
 VOLUME ["/etc/gitlab-runner"]
 ENTRYPOINT ["gitlab-ci-multi-runner"]
