@@ -29,7 +29,7 @@ RUN echo 'eval "$(phpenv init -)"' >> ~/.bash_profile
 
 COPY files/configure /root/.phpenv/plugins/php-build/share/php-build/default_configure_options
 
-ENV PATH /root/.phpenv/bin:$PATH
+ENV PATH /root/.phpenv/bin:/root/.phpenv/shims:$PATH
 
 VOLUME ["/etc/gitlab-runner"]
 ENTRYPOINT ["gitlab-ci-multi-runner"]
