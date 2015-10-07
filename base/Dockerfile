@@ -4,6 +4,9 @@ FROM ubuntu:14.04
 
 MAINTAINER  Michael Burri "mpbzh@burri.io"
 
+ENV PHP_DIR /etc/php5
+ENV PATH /root/.phpenv/bin:/root/.phpenv/shims:$PATH
+
 RUN apt-get update -y && \
     apt-get upgrade -y && \
     apt-get install -y ca-certificates wget apt-transport-https vim nano
@@ -12,12 +15,6 @@ RUN echo "deb https://packages.gitlab.com/runner/gitlab-ci-multi-runner/ubuntu/ 
     wget -q -O - https://packages.gitlab.com/gpg.key | apt-key add - && \
     apt-get update -y && \
     apt-get install -y gitlab-ci-multi-runner
-
-ADD entrypoint /
-RUN chmod +x /entrypoint
-
-VOLUME ["/etc/gitlab-runner", "$HOME"]
-ENTRYPOINT ["/entrypoint"]
 
 # Install packages required to build PHP
 RUN apt-get update -y && \
@@ -44,13 +41,11 @@ RUN wget -O /tmp/libbison-dev.deb http://launchpadlibrarian.net/140087283/libbis
 
 RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
     /tmp/phpenv/bin/phpenv-install.sh && \
-    echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh && \
-    echo 'eval "$(phpenv init -)"' >> $HOME/.bashrc
+    sudo /bin/bash -c "echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh" && \
+    echo 'eval "$(phpenv init -)"' >> /root/.bashrc
 
-RUN git clone git://github.com/CHH/php-build.git $HOME/.phpenv/plugins/php-build
-COPY files/configure $HOME/.phpenv/plugins/php-build/share/php-build/default_configure_options
-
-ENV PATH /root/.phpenv/shims:/root/.phpenv/bin:$PATH
+RUN git clone git://github.com/CHH/php-build.git /root/.phpenv/plugins/php-build
+COPY files/configure /root/.phpenv/plugins/php-build/share/php-build/default_configure_options
 
 # RUN ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/libfreetype.so && \
 #    ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
@@ -60,3 +55,10 @@ ENV PATH /root/.phpenv/shims:/root/.phpenv/bin:$PATH
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
+
+ADD entrypoint /
+RUN chmod +x /entrypoint
+
+VOLUME ["/etc/gitlab-runner", "/root"]
+ENTRYPOINT ["/entrypoint"]
+CMD ["run"]
