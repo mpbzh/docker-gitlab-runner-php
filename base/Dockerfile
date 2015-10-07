@@ -3,8 +3,6 @@
 FROM gitlab/gitlab-runner
 MAINTAINER  Michael Burri "mpbzh@burri.io"
 
-ENV PHP_DIR /etc/php5
-
 # Install packages required to build PHP
 RUN apt-get update -y && \
     apt-get build-dep -y php5 && \
@@ -28,31 +26,23 @@ RUN wget -O /tmp/libbison-dev.deb http://launchpadlibrarian.net/140087283/libbis
     dpkg -i /tmp/bison_2.7.1.deb && \
     rm -f /tmp/*.deb
 
+ENV HOME /home/gitlab-runner
 RUN echo $HOME
 
-# Install phpenv
-RUN cd /home/gitlab-runner && git clone git://github.com/phpenv/phpenv.git .phpenv 
-RUN echo 'eval "$(phpenv init -)"' >> /usr/local/.bashrc
+RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
+    /tmp/phpenv/bin/phpenv-install.sh && \
+    echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh && \
+    echo 'eval "$(phpenv init -)"' >> /home/gitlab-runner/.bashrc
 
-USER gitlab-runner
-ENV HOME /home/gitlab-runner
-WORKDIR /home/gitlab-runner
+RUN git clone git://github.com/CHH/php-build.git /home/gitlab-runner/.phpenv/plugins/php-build
+COPY files/configure /home/gitlab-runner/.phpenv/plugins/php-build/share/php-build/default_configure_options
 
-RUN echo 'export PATH="/home/gitlab-runner/.phpenv/bin:$PATH"' >> /home/gitlab-runner/.bashrc
-RUN mkdir /home/gitlab-runner/.phpenv/plugins; \
-    cd /home/gitlab-runner/.phpenv/plugins; \
-    git clone https://github.com/CHH/php-build.git
-
-ENV PATH /usr/local/.phpenv/shims:/usr/local/.phpenv/bin:$PATH
+RUN /home/gitlab-runner/.phpenv/shims:/home/gitlab-runner/.phpenv/bin:$PATH
 
 # RUN ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/libfreetype.so && \
 #    ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
 #    ln -s /usr/lib/x86_64-linux-gnu/libldap.so     /usr/lib/libldap.so && \
 #    ln -s /usr/include/x86_64-linux-gnu/gmp.h      /usr/include/gmp.h
-
-USER root
-ENV HOME /root
-WORKDIR /root
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php && \
