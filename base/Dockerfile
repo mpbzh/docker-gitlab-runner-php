@@ -27,6 +27,8 @@ RUN chmod +x /tmp/phpenv.sh && \
 
 COPY files/configure /root/.phpenv/plugins/php-build/share/php-build/default_configure_options
 
+ENV PATH /root/.phpenv/bin:$PATH
+
 VOLUME ["/etc/gitlab-runner"]
 ENTRYPOINT ["gitlab-ci-multi-runner"]
 CMD ["run"]
