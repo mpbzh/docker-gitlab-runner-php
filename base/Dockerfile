@@ -47,6 +47,3 @@ ENV PATH /home/gitlab-runner/.phpenv/shims:/home/gitlab-runner/.phpenv/bin:$PATH
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php && \
     mv composer.phar /usr/local/bin/composer
-
-USER gitlab-runner
-ENV PATH /home/gitlab-runner/.phpenv/shims:/home/gitlab-runner/.phpenv/bin:$PATH
