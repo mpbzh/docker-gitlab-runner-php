@@ -39,8 +39,7 @@ SH
 PHPENV_ROOT="$HOME/.phpenv"
 
 echo "Installing phpenv in $PHPENV_ROOT"
-local install_location="$PHPENV_ROOT"
-    git clone "$RBENV_REPO" "$install_location" > /dev/null
+    git clone "$RBENV_REPO" "$PHPENV_ROOT" > /dev/null
 
 sed -i -e 's/rbenv/phpenv/g' "$PHPENV_ROOT"/completions/rbenv.{bash,zsh}
 sed -i -s 's/\.rbenv-version/.phpenv-version/g' "$PHPENV_ROOT"/libexec/rbenv-local
@@ -51,10 +50,8 @@ sed -i -e 's/\(^\|[^/]\)rbenv/\1phpenv/g' "$PHPENV_ROOT"/libexec/rbenv-init
 sed -i -e 's/\phpenv-commands/rbenv-commands/g' "$PHPENV_ROOT"/libexec/rbenv-init
 sed -i -e 's/\Ruby/PHP/g' "$PHPENV_ROOT"/libexec/rbenv-which
 
-local install_location="$PHPENV_ROOT"
-
-phpenv_script "$install_location" > "$install_location/bin/phpenv"
-chmod +x "$install_location/bin/phpenv"
+phpenv_script "$PHPENV_ROOT" > "$PHPENV_ROOT/bin/phpenv"
+chmod +x "$PHPENV_ROOT/bin/phpenv"
 
 echo "export PATH=\"${PHPENV_ROOT}/bin:"'$PATH"' >> /root/.bashrc
 echo 'eval "$(phpenv init -)"' >> /root/.bashrc
