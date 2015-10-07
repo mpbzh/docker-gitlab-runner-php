@@ -1,7 +1,23 @@
 # docker-gitlab-runner-php
 
-FROM gitlab/gitlab-runner
+FROM ubuntu:14.04
+
 MAINTAINER  Michael Burri "mpbzh@burri.io"
+
+RUN apt-get update -y && \
+    apt-get upgrade -y && \
+    apt-get install -y ca-certificates wget apt-transport-https vim nano
+
+RUN echo "deb https://packages.gitlab.com/runner/gitlab-ci-multi-runner/ubuntu/ `lsb_release -cs` main" > /etc/apt/sources.list.d/runner_gitlab-ci-multi-runner.list && \
+    wget -q -O - https://packages.gitlab.com/gpg.key | apt-key add - && \
+    apt-get update -y && \
+    apt-get install -y gitlab-ci-multi-runner
+
+ADD entrypoint /
+RUN chmod +x /entrypoint
+
+VOLUME ["/etc/gitlab-runner", "$HOME"]
+ENTRYPOINT ["/entrypoint"]
 
 # Install packages required to build PHP
 RUN apt-get update -y && \
@@ -26,18 +42,15 @@ RUN wget -O /tmp/libbison-dev.deb http://launchpadlibrarian.net/140087283/libbis
     dpkg -i /tmp/bison_2.7.1.deb && \
     rm -f /tmp/*.deb
 
-ENV HOME /home/gitlab-runner
-RUN echo $HOME
-
 RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
     /tmp/phpenv/bin/phpenv-install.sh && \
     echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh && \
-    echo 'eval "$(phpenv init -)"' >> /home/gitlab-runner/.bashrc
+    echo 'eval "$(phpenv init -)"' >> $HOME/.bashrc
 
-RUN git clone git://github.com/CHH/php-build.git /home/gitlab-runner/.phpenv/plugins/php-build
-COPY files/configure /home/gitlab-runner/.phpenv/plugins/php-build/share/php-build/default_configure_options
+RUN git clone git://github.com/CHH/php-build.git $HOME/.phpenv/plugins/php-build
+COPY files/configure $HOME/.phpenv/plugins/php-build/share/php-build/default_configure_options
 
-ENV PATH /home/gitlab-runner/.phpenv/shims:/home/gitlab-runner/.phpenv/bin:$PATH
+ENV PATH /root/.phpenv/shims:/root/.phpenv/bin:$PATH
 
 # RUN ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/libfreetype.so && \
 #    ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
