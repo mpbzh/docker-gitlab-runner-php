@@ -20,9 +20,9 @@ ENV PATH /root/.phpenv/bin:/root/.phpenv/shims:$PATH
 RUN apk --update add wget curl git php php-curl php-openssl php-json php-phar php-dom
 
 RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
-    /tmp/phpenv/bin/phpenv-install.sh && \
-    sudo /bin/bash -c "echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh" && \
-    echo 'eval "$(phpenv init -)"' >> /root/.bashrc
+    /tmp/phpenv/bin/phpenv-install.sh
+RUN echo 'eval \"\$(phpenv init -)\"' >> /etc/profile.d/phpenv.sh
+RUN echo 'eval "$(phpenv init -)"' >> /root/.bashrc
 
 RUN git clone git://github.com/CHH/php-build.git /root/.phpenv/plugins/php-build
 COPY files/configure /root/.phpenv/plugins/php-build/share/php-build/default_configure_options
