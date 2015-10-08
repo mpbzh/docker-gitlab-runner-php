@@ -35,10 +35,10 @@ RUN apt-get update -y && \
                        php-pear
 	
 # Install a specific bison version
-RUN wget -O /tmp/libbison-dev.deb http://launchpadlibrarian.net/140087283/libbison-dev_2.6.4.dfsg-1_amd64.deb && \
-    wget -O /tmp/bison_2.6.4.deb http://launchpadlibrarian.net/140087282/bison_2.6.4.dfsg-1_amd64.deb && \
+RUN wget -O /tmp/libbison-dev.deb http://launchpadlibrarian.net/140087283/libbison-dev_2.7.1.dfsg-1_amd64.deb && \
+    wget -O /tmp/bison_2.7.1.deb http://launchpadlibrarian.net/140087282/bison_2.7.1.dfsg-1_amd64.deb && \
     dpkg -i /tmp/libbison-dev.deb && \
-    dpkg -i /tmp/bison_2.6.4.deb && \
+    dpkg -i /tmp/bison_2.7.1.deb && \
     rm -f /tmp/*.deb
 
 RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
@@ -48,6 +48,11 @@ RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
     
 RUN git clone git://github.com/CHH/php-build.git /root/.phpenv/plugins/php-build
 COPY files/configure /root/.phpenv/plugins/php-build/share/php-build/default_configure_options
+
+RUN ln -s /usr/lib/x86_64-linux-gnu/libfreetype.so /usr/lib/libfreetype.so && \
+    ln -s /usr/lib/x86_64-linux-gnu/libgmp.so      /usr/lib/libgmp.so && \
+    ln -s /usr/lib/x86_64-linux-gnu/libldap.so     /usr/lib/libldap.so && \
+    ln -s /usr/include/x86_64-linux-gnu/gmp.h      /usr/include/gmp.h
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php && \
