@@ -5,7 +5,7 @@ MAINTAINER  Michael Burri "mpbzh@burri.io"
 
 ENV PHP_VERSION 5.4.38
 
-# COPY files/ci-runner.ini /home/gitlab-runner/.phpenv/versions/$PHP_VERSION/etc/conf.d/ci-runner.ini
+COPY files/ci-runner.ini /home/gitlab-runner/.phpenv/versions/$PHP_VERSION/etc/conf.d/ci-runner.ini
 
 RUN phpenv install $PHP_VERSION \
     phpenv rehash && \
