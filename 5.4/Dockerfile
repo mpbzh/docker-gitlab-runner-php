@@ -3,7 +3,7 @@
 FROM mpbzh/gitlab-runner-php
 MAINTAINER  Michael Burri "mpbzh@burri.io"
 
-ENV PHP_VERSION 5.6.13
+ENV PHP_VERSION 5.4.38
 
 # COPY files/ci-runner.ini /home/gitlab-runner/.phpenv/versions/$PHP_VERSION/etc/conf.d/ci-runner.ini
 
