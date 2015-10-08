@@ -4,6 +4,7 @@ FROM ubuntu:14.04
 MAINTAINER  Michael Burri "mpbzh@burri.io"
 
 ENV PHP_DIR /etc/php5
+ENV PATH /root/.phpenv/bin:/root/.phpenv/shims:$PATH
 
 RUN apt-get update -y && \
     apt-get upgrade -y && \
@@ -17,9 +18,21 @@ RUN echo "deb https://packages.gitlab.com/runner/gitlab-ci-multi-runner/ubuntu/ 
 ADD files/entrypoint /
 RUN chmod +x /entrypoint
 
-# Install composer
-RUN curl -sS https://getcomposer.org/installer | php && \
-    mv composer.phar /usr/local/bin/composer
+# Install packages required to build PHP
+RUN apt-get update -y && \
+    apt-get build-dep -y php5 && \
+    apt-get install -y libmcrypt-dev libltdl-dev libreadline-dev libc-client2007e-dev libbz2-dev libkrb5-dev \
+                       libcurl4-gnutls-dev libfreetype6-dev libgmp-dev libjpeg8-dev libpng12-dev libt1-dev \
+                       libmhash-dev libexpat1-dev libicu-dev libtidy-dev re2c lemon libldap2-dev libsasl2-dev \
+                       libssh2-1-dev
+
+# Install some usefull packages
+RUN apt-get update -y && \
+    apt-get install -y git \
+                       wget \
+                       curl \
+                       apache2 \
+                       php-pear
 	
 # Install a specific bison version
 RUN wget -O /tmp/libbison-dev.deb http://launchpadlibrarian.net/140087283/libbison-dev_2.7.1.dfsg-1_amd64.deb && \
@@ -36,7 +49,9 @@ RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
 RUN git clone git://github.com/CHH/php-build.git /root/.phpenv/plugins/php-build
 COPY files/configure /root/.phpenv/plugins/php-build/share/php-build/default_configure_options
 
-ENV PATH /root/.phpenv/bin:/root/.phpenv/shims:$PATH
+# Install composer
+RUN curl -sS https://getcomposer.org/installer | php && \
+    mv composer.phar /usr/local/bin/composer
 
 VOLUME ["/etc/gitlab-runner", "/home/gitlab-runner"]
 ENTRYPOINT ["/entrypoint"]
