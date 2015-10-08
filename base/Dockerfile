@@ -24,7 +24,7 @@ RUN apt-get update -y && \
     apt-get install -y libmcrypt-dev libltdl-dev libreadline-dev libc-client2007e-dev libbz2-dev libkrb5-dev \
                        libcurl4-gnutls-dev libfreetype6-dev libgmp-dev libjpeg8-dev libpng12-dev libt1-dev \
                        libmhash-dev libexpat1-dev libicu-dev libtidy-dev re2c lemon libldap2-dev libsasl2-dev \
-                       libssh2-1-dev libgmp3-dev
+                       libssh2-1-dev
 
 # Install some usefull packages
 RUN apt-get update -y && \
@@ -35,10 +35,10 @@ RUN apt-get update -y && \
                        php-pear
 	
 # Install a specific bison version
-RUN wget -O /tmp/libbison-dev.deb http://launchpadlibrarian.net/140087283/libbison-dev_2.7.1.dfsg-1_amd64.deb && \
-    wget -O /tmp/bison_2.7.1.deb http://launchpadlibrarian.net/140087282/bison_2.7.1.dfsg-1_amd64.deb && \
+RUN wget -O /tmp/libbison-dev.deb http://launchpadlibrarian.net/140087283/libbison-dev_2.6.4.dfsg-1_amd64.deb && \
+    wget -O /tmp/bison_2.6.4.deb http://launchpadlibrarian.net/140087282/bison_2.6.4.dfsg-1_amd64.deb && \
     dpkg -i /tmp/libbison-dev.deb && \
-    dpkg -i /tmp/bison_2.7.1.deb && \
+    dpkg -i /tmp/bison_2.6.4.deb && \
     rm -f /tmp/*.deb
 
 RUN git clone https://github.com/CHH/phpenv.git /tmp/phpenv && \
