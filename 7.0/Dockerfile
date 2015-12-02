@@ -1,9 +1,9 @@
-# gitlab-runner-php-55
+# gitlab-runner-php-70
 
 FROM mpbzh/gitlab-runner-php
 MAINTAINER  Michael Burri "mpbzh@burri.io"
 
-ENV PHP_VERSION 5.5.29
+ENV PHP_VERSION 7.0.0
 
 COPY files/ci-runner.ini /root/.phpenv/versions/$PHP_VERSION/etc/conf.d/ci-runner.ini
 

@@ -1,4 +1,4 @@
-# gitlab-runner-php-54
+# gitlab-runner-php-56
 
 FROM mpbzh/gitlab-runner-php
 MAINTAINER  Michael Burri "mpbzh@burri.io"
